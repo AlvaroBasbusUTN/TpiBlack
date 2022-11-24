@@ -1,1 +1,118 @@
-<p>tablero works!</p>
+<div class="container" *ngIf="mostrar==false">
+    <div class="centrado">
+        <div class="row oval">
+            <div class="col-sm">
+            </div>
+            <div class="col-sm">
+                <img src="../../../assets/media/bj_logo.png" alt="" class="logo">
+                <br>
+                <form>
+                    <div>
+                        <input type="text" class="form-control my-3" name="nombreJugador" [(ngModel)]="nombreUsuario"
+                            id="nombreJugador" placeholder="ingrese su nombre" />
+                    </div>
+                    <div>
+                        <input type="password" class="form-control my-3" name="password" [(ngModel)]="password"
+                            id="password" placeholder="ingrese su contraseña" />
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary"  (click)="login()">Ingresar</button>
+                    <br>
+                    <br>
+                    <h2>TPI - DABD</h2>
+                    <h3>Alvaro Basbus - 112823</h3>
+                    <h3>David Perez - 112858</h3>
+                </form>
+            </div>
+            <div class="col-sm">
+  
+            </div>
+        </div>
+    </div>
+  </div>
+  
+  
+  
+  
+  
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="mostrar==true">
+    <a class="navbar-brand" href="#">{{usuario.userName}}</a>
+   
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="#" (click)="alert()">ESTADISTICAS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">INFO</a>
+        </li>
+      </ul>
+  
+  
+      <a class="navbar-brand cerrar" href="">cerrar sesion</a>
+   
+    
+  </nav>
+  
+  <div class="container centrado" *ngIf="mostrar==true">
+   
+  
+  
+    <div class="row row-cols-2" style="height: 800px;">
+      <div class="col-4 marcador">
+        <br>
+        <!--<p><app-inicio>[nombreJugador=]</app-inicio></p>-->
+        <img src="../../../assets/media/bj_logo.png" alt="logo" class="logo">
+        <Div>
+          <h3>Croupier: {{partida.puntosCroupier}} </h3>
+          <h3>{{this.usuario.userName}} : {{partida.puntosJugador}}</h3>
+          <br>
+          <p *ngIf="finalizada"> {{mensaje}} </p>
+          <br>
+        </Div>
+        <div>
+          <button class="btn btn-primary" *ngIf="partida.finalizada==false"  [ngClass]="{disabled : stand}" (click)="pedir()">Pedir</button>
+          <button class="btn btn-primary" *ngIf="partida.finalizada==false"  (click)="pasar()" [ngClass]="{disabled : stand}">Pasar</button>  
+        </div>
+        <div>
+          <button class="btn btn-primary" *ngIf="partida.finalizada==true"  (click)="crearPartida()">Nueva partida</button>
+        </div>
+  
+        <br>
+        <label *ngIf="sinpartida">Inicia tu primer juego</label>
+        <button *ngIf="sinpartida" class="btn btn-primary" (click)="crearPartida()" >Iniciar partida</button>
+        <br>
+        <br>
+        <button *ngIf="iniciar" class="btn btn-primary" >Repartir</button>
+      </div>
+      <div class="col-8 tablero">
+        <div class="row crupierCarta">
+          <div class="col">
+            <img src="../../../assets/media/cartas/dorso.png" alt="dorso" class="carta">
+            <span *ngFor="let lista of partida.jugadaCartas">
+              <img src={{lista.carta.url}} alt="jota" class="carta" *ngIf="lista.jugador==false">
+            </span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+          </div>
+        </div>
+        <div class="row jugadorCarta">
+          <div class="col">
+            <span *ngFor="let lista of partida.jugadaCartas">
+              <img src={{lista.carta.url}} alt="jota" class="carta" *ngIf="lista.jugador==true" >
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="" style="background-color: white;">
+  
+  
+    {{partida | json}}
+  </div>
+  
+  
+  
