@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+    background-image: url("assets/media/pattern.jpg");  
+    background-repeat: repeat;
+ }      
+/* html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */
+
+p{
+    color: white;
+}
+
+/* div{
+    border-color: blue;
+    border-style: solid;
+} */

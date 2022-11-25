@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,22 +9,24 @@ import { Observable } from 'rxjs';
 export class ReporteService {
   apiUrlBase: string = "http://localhost:8080";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+
+  }
 
   reporteJugFecha(): Observable<any> {
     return this.http.get<any>(this.apiUrlBase + "/reporte/jugFechas");
   }
 
-  victoriasCroupier(): Observable<any> {
-    return this.http.get<any>(this.apiUrlBase + "/reporte/victoriasCroupier");
+  victoriasCroupier(): Observable<number> {
+    return this.http.get<number>(this.apiUrlBase + "/reporte/victoriasCroupier");
   }
 
-  victoriaJugador(): Observable<any> {
-    return this.http.get<any>(this.apiUrlBase + "/reporte/victoriaJugador");
+  victoriaJugador(): Observable<number> {
+    return this.http.get<number>(this.apiUrlBase + "/reporte/victoriaJugador");
   }
 
-  empates(): Observable<any> {
-    return this.http.get<any>(this.apiUrlBase + "/reporte/empates");
+  empates(): Observable<number> {
+    return this.http.get<number>(this.apiUrlBase + "/reporte/empates");
   }
 
   promedio(): Observable<any> {

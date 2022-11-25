@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { EstadisticasComponent } from '../estadisticas/estadisticas.component';
 import { Carta } from '../models/carta';
 import { JugadaCartas } from '../models/jugada-cartas';
 import { Partida } from '../models/partida';
@@ -21,7 +22,7 @@ export class TableroComponent implements OnInit {
   usuario: Usuario=  {} as Usuario;
   mostrar: boolean;
 
-
+ // modalRef: MdbModalRef<EstadisticasComponent> | null = null;
 
   cartas: Carta[]=[];
 
@@ -44,6 +45,7 @@ export class TableroComponent implements OnInit {
 
 
 
+
 constructor(private reporteService: ReporteService, private partidaservice: PartidaService, private usuarioService: UsuarioService, private router: Router, private activatedRoute: ActivatedRoute) { 
 
   }
@@ -53,19 +55,29 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
     this.mostrar=false;
     this.finalizada=false;
     this.mensaje="";
-    this.reporte1();
+
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
-  alert(){
-    alert("te la creiste")
+
+
+  estadisticas(){
+   // this.modalRef = this.modalService.open(EstadisticasComponent);
   }
 
+  cerrar(){
+    this.stand=false;
+    this.mostrar=false;
+    this.finalizada=false;
+    this.mensaje="";
+    this.usuario= {} as Usuario;
+    this.partida= {} as Partida;
+
+  }
 
   login() {
-
     this.usuario.userName=this.nombreUsuario
     this.usuario.password=this.password;
     this.subscription.add(
@@ -74,8 +86,6 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
           this.usuario = response;
             if(response.userName== this.usuario.userName){
               this.mostrar=true;
-            console.log(this.usuario)
-              ///
               this.subscription.add(
                 this.usuarioService.obtenerPartidaUser(this.usuario.idUser).subscribe({
                   next: (resp : Partida) => {
@@ -90,6 +100,7 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
                         }
                        
                       }
+                      
                     }else{
                       this.sinpartida=true;
                       this.finalizada=true;
@@ -124,22 +135,20 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
       this.subscription.add(
         this.partidaservice.pedirCartaJugador(this.partida.idPlay).subscribe({
           next: (respuesta: Partida)=>{
-            if((respuesta.puntosJugador - x)==1){
-              const result: boolean = confirm(
-                'Quiere que el as valga 11?'
-              );
-
-            }
             this.partida=respuesta;
             if(this.partida.finalizada==true){
+          
               this.stand=true;
               if(this.partida.ganador=="empate"){
                 this.mensaje="¡Empate!";
               }else{
                 this.mensaje= `Ganador: ${this.partida.ganador}`;
               }
+              this.finalizada=true;
+            }else{
+              this.mensaje="";
             }
-
+          
             
           },
           error:()=>{
@@ -166,19 +175,7 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
       )
     }
 
-    empates(){
-      this.subscription.add(
-        this.reporteService.empates().subscribe({
-          next: (respuesta: any)=>{
-              console.log(respuesta)
-           
-          },
-          error:()=>{
-            alert("error al obtener el reporte1")
-          }
-        })
-      )
-    }
+
 
     victoriasCroupier(){
       this.subscription.add(
@@ -195,19 +192,7 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
     }
 
 
-    victoriaJugador(){
-      this.subscription.add(
-        this.reporteService.victoriaJugador().subscribe({
-          next: (respuesta: any)=>{
-              console.log(respuesta)
-           
-          },
-          error:()=>{
-            alert("error al obtener el reporte1")
-          }
-        })
-      )
-    }
+  
 
 
     reporteJugFecha(){
@@ -225,6 +210,7 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
     }
 
     pasar(){
+        this.mensaje="";
         this.pedirCartaCroupier();
         this.stand=true;
         
@@ -236,15 +222,17 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
           next: (respuesta: Partida)=>{
             this.partida = respuesta;    
             if(respuesta.finalizada==true){
+              
               if(respuesta.ganador=="jugador"){
                 this.mensaje= `Ganador: ${this.usuario.userName}`;
               }
               if(respuesta.ganador=="croupier"){
                 this.mensaje= `Ganador: ${respuesta.ganador}`;
-              }else{
+              }
+              if(respuesta.ganador=="empate"){
                 this.mensaje= `Empate`;
               }
-            // this.mensaje= `Ganador: ${respuesta.ganador}`;
+              this.finalizada=true;
             }
  
           },
@@ -259,16 +247,17 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
 
 
   crearPartida(){
+    this.finalizada=false;
     this.subscription.add(
       this.partidaservice.crearPartida(this.usuario.idUser).subscribe({
         next: (respuesta: Partida)=>{
           this.partida = respuesta;
           if(respuesta.puntosJugador==21){
             this.mensaje="BlackJack!!! Ganaste";
+            this.finalizada=true;
           }    
           this.stand=false;
           this.sinpartida=false; 
-          this.mensaje="";   
         },
         error:()=>{
           alert("error al crear la partida")
