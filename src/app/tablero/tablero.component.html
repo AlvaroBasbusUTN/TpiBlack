@@ -1,4 +1,4 @@
-<div class="container" *ngIf="mostrar==false">
+<div class="container" *ngIf="logeado==true">
     <div class="centrado">
         <div class="row oval">
             <div class="col-sm">
@@ -35,15 +35,15 @@
   
   
   
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="mostrar==true">
-    <a class="navbar-brand" href="#">{{usuario.userName}}</a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="nav==true">
+    <a class="navbar-brand" href="#">JUGADOR: {{usuario.userName}}</a>
    
       <ul class="navbar-nav">
         <li class="nav-item active">
-          <a class="nav-link" href="#" (click)="estadisticas()">ESTADISTICAS</a>
+          <a class="nav-link" href="#" (click)="setJugar()">JUGAR</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">INFO</a>
+        <li class="nav-item active">
+          <a class="nav-link" href="#" (click)="estadisticas()">ESTADISTICAS</a>
         </li>
       </ul>
   
@@ -53,14 +53,13 @@
     
   </nav>
   
-  <div class="container centrado" *ngIf="mostrar==true">
+  <div class="container centrado" *ngIf="jugar==true">
    
   
   
     <div class="row row-cols-2" style="height: 800px;">
       <div class="col-4 marcador">
         <br>
-        <!--<p><app-inicio>[nombreJugador=]</app-inicio></p>-->
         <img src="../../../assets/media/bj_logo.png" alt="logo" class="logo">
         <Div>
           <h3>Croupier: {{partida.puntosCroupier}} </h3>
@@ -108,11 +107,6 @@
     </div>
   </div>
   
-  <div class="" style="background-color: white;">
   
-  
-    {{partida | json}}
-  </div>
-  
-  
-  
+  <app-estadisticas *ngIf="estadistica"></app-estadisticas>
+  <button *ngIf="estadistica"></button>

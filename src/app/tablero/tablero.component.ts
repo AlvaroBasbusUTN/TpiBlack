@@ -1,3 +1,4 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -9,6 +10,7 @@ import { Usuario } from '../models/usuario';
 import { PartidaService } from '../servicios/partida.service';
 import { ReporteService } from '../servicios/reporte.service';
 import { UsuarioService } from '../servicios/usuario.service';
+
 
 @Component({
   selector: 'app-tablero',
@@ -23,6 +25,13 @@ export class TableroComponent implements OnInit {
   mostrar: boolean;
 
  // modalRef: MdbModalRef<EstadisticasComponent> | null = null;
+  logeado: boolean;
+  jugar: boolean;
+  estadistica: boolean;
+  nav: boolean;
+
+
+
 
   cartas: Carta[]=[];
 
@@ -52,7 +61,10 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
 
   ngOnInit(): void {
     this.stand=false;
-    this.mostrar=false;
+    this.logeado=true;
+    this.nav=false;
+    this.jugar=false;
+    this.estadistica=false;
     this.finalizada=false;
     this.mensaje="";
 
@@ -64,12 +76,22 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
 
 
   estadisticas(){
-   // this.modalRef = this.modalService.open(EstadisticasComponent);
+    this.jugar=false;
+    this.estadistica=true;
+  
+  }
+
+  setJugar(){
+    this.estadistica=false;
+    this.jugar=true;
   }
 
   cerrar(){
     this.stand=false;
-    this.mostrar=false;
+    this.jugar=false;
+    this.estadistica=false;
+    this.nav=false;
+    this.logeado=true;
     this.finalizada=false;
     this.mensaje="";
     this.usuario= {} as Usuario;
@@ -86,6 +108,10 @@ constructor(private reporteService: ReporteService, private partidaservice: Part
           this.usuario = response;
             if(response.userName== this.usuario.userName){
               this.mostrar=true;
+              this.jugar=true;
+              this.estadistica=false;
+              this.nav=true;
+              this.logeado=false;
               this.subscription.add(
                 this.usuarioService.obtenerPartidaUser(this.usuario.idUser).subscribe({
                   next: (resp : Partida) => {

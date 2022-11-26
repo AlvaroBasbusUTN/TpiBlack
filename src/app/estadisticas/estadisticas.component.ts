@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ChartData, ChartEvent, ChartType } from 'chart.js';
 //import { ConsoleReporter } from 'jasmine';
 import { observable, Subscription } from 'rxjs';
+import { Reporte } from '../models/reporte';
 import { ReporteService } from '../servicios/reporte.service';
 
 @Component({
@@ -17,6 +18,8 @@ export class EstadisticasComponent implements OnInit {
   empates: number;
   numeros: number[];
  // datos: number[];
+ reporte: Reporte[];
+ rep: Reporte;
 
 
   private subscription = new Subscription();
@@ -34,10 +37,13 @@ export class EstadisticasComponent implements OnInit {
     //this.setData();
     alert("cargando datos...")
 
+
   }
 
+
+
   // Doughnut
-  public doughnutChartLabels: string[] = [ 'Victorias Croupier', 'Victorias Jugadores', 'Empates' ];
+  public doughnutChartLabels: string[] = [ ];
  // public doughnutChartData:number[] = [ 100, 150, 70 ];
    public doughnutChartData: ChartData<'doughnut'> = {
 
@@ -72,6 +78,7 @@ export class EstadisticasComponent implements OnInit {
         next: (respuesta: any)=>{
           this.victoriasCroupier=respuesta;
            console.log(this.victoriasCroupier)
+           this.doughnutChartData.labels?.push("Victorias Croupier")
            this.doughnutChartData.datasets[0].data.push(this.victoriasCroupier);
            return this.victoriasCroupier;
         },
@@ -89,6 +96,7 @@ export class EstadisticasComponent implements OnInit {
         next: (respuesta: number)=>{
             this.victoriasJuga=respuesta;
             console.log(this.victoriasJuga);
+            this.doughnutChartData.labels?.push("Victorias Jugador")
             this.doughnutChartData.datasets[0].data.push(this.victoriasJuga);
         },
         error:()=>{
@@ -105,6 +113,7 @@ export class EstadisticasComponent implements OnInit {
         next: (respuesta: number)=>{
             this.empates=respuesta;
           console.log(this.empates)
+          this.doughnutChartData.labels?.push("Empate")
           this.doughnutChartData.datasets[0].data.push(this.empates);
         },
         error:()=>{
