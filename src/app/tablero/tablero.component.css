@@ -1,0 +1,81 @@
+.centrado{
+    text-align: center;
+}
+
+.navbar-brand{
+    margin-left: 30px;
+}
+
+.navbar-nav{
+    margin-left: 20px;
+}
+.cerrar{
+    margin-left: auto;
+    margin-right: 20px;
+    font-size: small;
+}
+
+.tablero{
+    background-image: url("../../assets/media/Blackjack_layout.png");
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 75%;
+}
+
+.carta{
+    height: 90px;
+    display: inline-block;
+    margin: 2px;
+}
+
+.crupierCarta {
+    margin-top: 30%;
+}
+
+.jugadorCarta{
+    margin-top: 5%
+}
+
+h1, h2, h3 {
+    color:white;
+}
+
+button{
+    margin: 5px;
+}
+
+.marcador{
+    height: 450px; 
+    border-radius: 
+    0 0 21px 21px;
+    background-color: #005500 !important;
+}
+
+.logo{
+    width: 300px;
+    margin-bottom: 30px;
+}
+.ganador{
+    font-family: helvetica, arial, sans-serif;
+    animation: 1.5s anim-flipX ease infinite;  
+    font-size: 2em;
+    font-weight: bold;
+    color:red;
+}
+
+@keyframes anim-flipX {
+    0% {
+      opacity: 0;
+      transform: rotateX(90def);
+    }
+    50% {
+      opacity: 1;
+      transform: rotateX(720deg);
+    }
+    100% {
+      /* animate nothing to pause animation at the end */
+      opacity: 1;
+      transform: rotateX(720deg);
+    }
+  }
+  

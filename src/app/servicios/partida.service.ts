@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Partida } from '../models/partida';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,9 @@ export class PartidaService {
 
   apiUrlBase: string = "http://localhost:8080";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+
+   }
 
 
       crearPartida(id: number): Observable<Partida> {
@@ -26,6 +29,10 @@ export class PartidaService {
   
       pedirCartaCroupier(id: number): Observable<Partida>{
         return this.http.get<Partida>(this.apiUrlBase + "/play/pedirCartaCroupier/" +id);
+      }
+
+      sumarAS(id: number): Observable<Partida>{
+        return this.http.get<Partida>(this.apiUrlBase + "/play/as/" +id);
       }
 
 }
